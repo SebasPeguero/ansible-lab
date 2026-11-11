@@ -99,6 +99,12 @@ ansible-playbook -i inventory.ini playbook.yml
 
 ## 📸 Evidencia de Ejecución Exitosa
 
+### Captura de Pantalla del Playbook (Requisito de la Práctica)
+![Captura de Ejecución Exitosa del Playbook](screenshot.png)
+
+### Captura de Comprobación de Conexión (Ping) y Archivos Creados
+![Comprobación de Conexión y Verificación](screenshot-ping.png)
+
 ### 1. Salida del Ping de Ansible:
 ```json
 server1 | SUCCESS => {
