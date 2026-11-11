@@ -1,0 +1,50 @@
+---
+- name: Practica 2do Parcial Ansible - Gestion de Servidores Docker
+  hosts: docker
+  gather_facts: yes
+  tasks:
+    - name: 1. Mostrar el nombre del host
+      debug:
+        msg: "El nombre del host es: {{ inventory_hostname }}"
+
+    - name: 2. Mostrar el sistema operativo
+      debug:
+        msg: "El sistema operativo es: {{ ansible_distribution }} {{ ansible_distribution_version }} (Familia: {{ ansible_os_family }})"
+
+    - name: 3. Crear el directorio /tmp/ansible-demo
+      file:
+        path: /tmp/ansible-demo
+        state: directory
+        mode: '0755'
+
+    - name: 4. Crear archivo info.txt y escribir el nombre del servidor y el sistema operativo
+      copy:
+        dest: /tmp/ansible-demo/info.txt
+        content: |
+          ==============================================
+          Laboratorio 2do Parcial - Ansible & Docker
+          ==============================================
+          Nombre del Servidor: {{ inventory_hostname }}
+          Sistema Operativo  : {{ ansible_distribution }} {{ ansible_distribution_version }}
+          Kernel             : {{ ansible_kernel }}
+          Arquitectura       : {{ ansible_architecture }}
+          Estudiante         : Sebastián Peguero (2025-1172)
+          Materia            : Electiva II (DevOps)
+          Fecha de Ejecución : {{ ansible_date_time.iso8601 }}
+          ==============================================
+        mode: '0644'
+
+    - name: 5. Crear mediante un loop los directorios (logs, backup, config)
+      file:
+        path: "/tmp/ansible-demo/{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - logs
+        - backup
+        - config
+
+    - name: 6. Mostrar un mensaje únicamente cuando el sistema operativo sea Ubuntu
+      debug:
+        msg: "¡Confirmado! Este servidor ({{ inventory_hostname }}) está ejecutando el sistema operativo {{ ansible_distribution }} {{ ansible_distribution_version }}."
+      when: ansible_distribution == "Ubuntu"
